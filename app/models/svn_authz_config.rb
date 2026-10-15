@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class SvnAuthzConfig < ApplicationRecord
+class SvnAuthzConfig < ActiveRecord::Base
   SOURCES = %w(managed file).freeze
   MAX_REPORTED_ERRORS = 10
 

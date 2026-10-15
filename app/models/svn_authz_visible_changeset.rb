@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class SvnAuthzVisibleChangeset < ApplicationRecord
+class SvnAuthzVisibleChangeset < ActiveRecord::Base
   belongs_to :visibility_set, :class_name => 'SvnAuthzVisibilitySet'
   belongs_to :changeset
 end

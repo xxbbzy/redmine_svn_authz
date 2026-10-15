@@ -6,7 +6,7 @@
 #
 # Rows are added incrementally: each sync evaluates only the changes added
 # since the previous one.
-class SvnAuthzVisibilitySet < ApplicationRecord
+class SvnAuthzVisibilitySet < ActiveRecord::Base
   BATCH_SIZE = 5000
   # Sets not used for this long are deleted (rules changed since)
   UNUSED_FOR = 30.days
