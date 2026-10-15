@@ -1,0 +1,32 @@
+# Database configuration of the development/test image.
+# The test database is selected with DB=sqlite|postgresql|mysql (and
+# DB_HOST). Every adapter appears below so that Redmine's Gemfile installs
+# all database gems.
+<% db = ENV.fetch('DB', 'sqlite') %>
+production:
+  adapter: sqlite3
+  database: sqlite/redmine.db
+
+development:
+  adapter: sqlite3
+  database: sqlite/redmine-dev.db
+
+test:
+<% if db == 'postgresql' %>
+  adapter: postgresql
+  host: <%= ENV.fetch('DB_HOST', 'localhost') %>
+  username: postgres
+  password: postgres
+  database: redmine_test
+  encoding: utf8
+<% elsif db == 'mysql' %>
+  adapter: mysql2
+  host: <%= ENV.fetch('DB_HOST', '127.0.0.1') %>
+  username: root
+  password: root
+  database: redmine_test
+  encoding: utf8mb4
+<% else %>
+  adapter: sqlite3
+  database: sqlite/redmine-test.db
+<% end %>

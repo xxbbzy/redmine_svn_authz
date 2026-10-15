@@ -1,0 +1,42 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  core:
+    name: Core (Ruby ${{ matrix.ruby }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        ruby: ['3.1', '3.4']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: ${{ matrix.ruby }}
+      - run: gem install minitest sqlite3
+      - run: ruby test/unit/authz_core_test.rb
+
+  redmine:
+    name: Redmine ${{ matrix.redmine }} / ${{ matrix.db }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        redmine: ['5.1', '6']
+        db: [sqlite, postgresql, mysql]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run tests
+        run: docker/run-tests.sh
+        env:
+          REDMINE_VERSION: ${{ matrix.redmine }}
+          DB: ${{ matrix.db }}

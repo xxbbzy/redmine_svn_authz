@@ -1,0 +1,147 @@
+<div class="contextual">
+  <%= link_to l(:button_back), settings_project_path(@project, :tab => 'repositories'), :class => 'icon icon-cancel' %>
+  <% if @config.persisted? %>
+    <%= link_to l(:label_svn_authz_download), download_repository_svn_authz_path(@repository), :class => 'icon icon-download' %>
+  <% end %>
+</div>
+
+<h2><%= l(:label_svn_authz) %> &#187; <%= @repository.identifier.presence || @repository.url %></h2>
+
+<%= error_messages_for 'config' %>
+
+<% policy = @config.parsed_policy if @authz_text %>
+
+<%= form_for @config, :as => :svn_authz_config, :url => repository_svn_authz_path(@repository),
+             :html => { :method => :patch } do |f| %>
+  <div class="box tabular">
+    <p>
+      <%= f.label :enabled, l(:field_svn_authz_enabled) %>
+      <%= f.check_box :enabled %>
+      <em class="info"><%= l(:text_svn_authz_enabled) %></em>
+    </p>
+    <p>
+      <%= f.label :source, l(:field_svn_authz_source) %>
+      <%= f.select :source, SvnAuthzConfig::SOURCES.map { |s| [l("label_svn_authz_source_#{s}"), s] } %>
+    </p>
+    <p>
+      <%= f.label :authz_file_path, l(:field_svn_authz_file_path) %>
+      <%= f.text_field :authz_file_path, :size => 60, :placeholder => '/etc/svn/authz' %>
+      <em class="info"><%= l(:text_svn_authz_file_path) %></em>
+    </p>
+    <p>
+      <%= f.label :authz_repo_name, l(:field_svn_authz_repo_name) %>
+      <%= f.text_field :authz_repo_name, :size => 30, :placeholder => (@config.default_repo_name rescue nil) %>
+      <em class="info"><%= l(:text_svn_authz_repo_name) %></em>
+    </p>
+    <p>
+      <%= f.label :path_prefix_override, l(:field_svn_authz_path_prefix) %>
+      <%= f.text_field :path_prefix_override, :size => 30, :placeholder => (@config.default_path_prefix rescue nil) %>
+      <em class="info"><%= l(:text_svn_authz_path_prefix) %></em>
+    </p>
+    <p>
+      <%= f.label :export_path, l(:field_svn_authz_export_path) %>
+      <%= f.text_field :export_path, :size => 60 %>
+      <em class="info"><%= l(:text_svn_authz_export_path) %></em>
+    </p>
+  </div>
+
+  <% if @config.file_source? %>
+    <h3><%= l(:label_svn_authz_current_rules) %></h3>
+    <pre class="svn-authz-text"><%= @authz_text || l(:text_svn_authz_file_missing) %></pre>
+    <p><%= submit_tag l(:button_save) %></p>
+  <% else %>
+    <h3><%= l(:label_svn_authz_raw_editor) %></h3>
+    <p><em class="info"><%= l(:text_svn_authz_raw_editor) %></em></p>
+    <%= f.text_area :authz_content, :rows => 20, :class => 'wiki-edit', :style => 'font-family: monospace; width: 100%;' %>
+    <p><%= submit_tag l(:button_save), :name => 'editor', :value => 'raw' %></p>
+
+    <h3><%= l(:label_svn_authz_rule_editor) %></h3>
+    <p><em class="info"><%= l(:text_svn_authz_rule_editor) %></em></p>
+
+    <% groups = policy ? policy.groups.to_a : [] %>
+    <table class="list svn-authz-groups">
+      <thead><tr><th><%= l(:label_svn_authz_group) %></th><th><%= l(:label_svn_authz_members) %></th></tr></thead>
+      <tbody>
+        <% (groups + [[nil, []]] * SvnAuthzConfigsController::BLANK_RULE_ROWS).each_with_index do |(name, members), i| %>
+          <tr>
+            <td><%= text_field_tag "groups[#{i}][name]", name, :size => 20 %></td>
+            <td><%= text_field_tag "groups[#{i}][members]", members.join(', '), :size => 80 %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+
+    <% rules = policy ? policy.sections.flat_map { |s| s.rules.map { |r| [s.header, r.principal, r.access] } } : [] %>
+    <table class="list svn-authz-rules">
+      <thead>
+        <tr>
+          <th><%= l(:label_svn_authz_path) %></th>
+          <th><%= l(:label_svn_authz_principal) %></th>
+          <th><%= l(:label_svn_authz_access) %></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% (rules + [[nil, nil, 'r']] * SvnAuthzConfigsController::BLANK_RULE_ROWS).each_with_index do |(section, principal, access), i| %>
+          <tr>
+            <td><%= text_field_tag "rules[#{i}][section]", section, :size => 40, :placeholder => '/dirA, :glob:/src/*' %></td>
+            <td><%= text_field_tag "rules[#{i}][principal]", principal, :size => 25, :placeholder => 'alice, @group, *' %></td>
+            <td><%= select_tag "rules[#{i}][access]",
+                               options_for_select([[l(:label_svn_authz_access_none), ''], ['r', 'r'], ['rw', 'rw']], access) %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+    <p><em class="info"><%= l(:text_svn_authz_rule_editor_delete) %></em></p>
+    <p><%= submit_tag l(:button_save), :name => 'editor', :value => 'rules' %></p>
+  <% end %>
+<% end %>
+
+<h3><%= l(:label_svn_authz_import) %></h3>
+<%= form_tag import_repository_svn_authz_path(@repository) do %>
+  <p>
+    <%= text_field_tag :import_path, @config.authz_file_path, :size => 60, :placeholder => '/etc/svn/authz' %>
+    <%= submit_tag l(:button_import) %>
+    <em class="info"><%= l(:text_svn_authz_import) %></em>
+  </p>
+<% end %>
+
+<h3><%= l(:label_svn_authz_preview) %></h3>
+<%= form_tag edit_repository_svn_authz_path(@repository), :method => :get do %>
+  <p>
+    <%= text_field_tag :preview_login, @preview_login, :size => 20, :placeholder => 'login' %>
+    <%= text_field_tag :preview_path, @preview_path, :size => 40, :placeholder => '/trunk/src/module_a' %>
+    <%= submit_tag l(:button_svn_authz_preview), :name => nil %>
+    <em class="info"><%= l(:text_svn_authz_preview) %></em>
+  </p>
+<% end %>
+
+<% if @preview_login %>
+  <% if @preview_user && (@preview_user.admin? || @preview_user.allowed_to?(:bypass_svn_authz, @project)) %>
+    <p class="warning"><%= l(:text_svn_authz_preview_bypass) %></p>
+  <% end %>
+  <% if @preview_rules %>
+    <% if @preview_path %>
+      <% access = @preview_rules.access(@preview_path) %>
+      <p>
+        <code><%= RedmineSvnAuthz::Parser.normalize_path(@preview_path) %></code>:
+        <strong><%= access.empty? ? l(:label_svn_authz_access_none) : access %></strong>
+      </p>
+    <% end %>
+    <table class="list">
+      <thead><tr><th><%= l(:label_svn_authz_section) %></th><th><%= l(:label_svn_authz_access) %></th></tr></thead>
+      <tbody>
+        <% @preview_rules.describe.each do |header, access| %>
+          <tr>
+            <td><code>[<%= header %>]</code></td>
+            <td><%= access.empty? ? l(:label_svn_authz_access_none) : access %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+    <p><em class="info"><%= l(:text_svn_authz_preview_inherit, :prefix => (@config.path_prefix rescue '/')) %></em></p>
+  <% else %>
+    <p class="nodata"><%= l(:text_svn_authz_invalid_rules) %></p>
+  <% end %>
+<% end %>
+
+<% html_title l(:label_svn_authz) %>

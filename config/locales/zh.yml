@@ -1,0 +1,54 @@
+zh:
+  label_svn_authz: 目录权限
+  label_svn_authz_download: 下载 authz
+  label_svn_authz_source_managed: 在 Redmine 中维护
+  label_svn_authz_source_file: 读取服务器上的 authz 文件
+  label_svn_authz_current_rules: 当前生效的规则
+  label_svn_authz_raw_editor: authz 规则
+  label_svn_authz_rule_editor: 规则表格
+  label_svn_authz_group: 组
+  label_svn_authz_members: 成员
+  label_svn_authz_path: 路径
+  label_svn_authz_principal: 用户 / @组 / *
+  label_svn_authz_access: 权限
+  label_svn_authz_access_none: 无
+  label_svn_authz_import: 从 authz 文件导入
+  label_svn_authz_preview: 以用户身份预览
+  label_svn_authz_section: 段
+  button_svn_authz_preview: 预览
+  field_svn_authz_enabled: 启用
+  field_svn_authz_source: 规则来源
+  field_svn_authz_file_path: authz 文件
+  field_svn_authz_repo_name: authz 版本库名
+  field_svn_authz_path_prefix: 版本库 URL 对应路径
+  field_svn_authz_export_path: 导出到文件
+  field_authz_content: authz 规则
+  field_authz_file_path: authz 文件
+  field_authz_repo_name: authz 版本库名
+  field_path_prefix_override: 版本库 URL 对应路径
+  field_export_path: 导出到文件
+  field_source: 规则来源
+  permission_manage_svn_authz: 管理目录权限
+  permission_bypass_svn_authz: 不受目录权限限制
+  setting_svn_authz_allowed_directories: 允许的 authz 文件目录
+  notice_svn_authz_imported: "已导入 %{path}，请检查规则后保存。"
+  text_svn_authz_enabled: 启用后，用户只能看到 authz 规则授予其读权限的路径。管理员和拥有「不受目录权限限制」权限的角色不受影响。
+  text_svn_authz_file_path: 仅在「读取服务器上的 authz 文件」时使用，文件修改后自动生效。
+  text_svn_authz_repo_name: "用于匹配 [名称:/path] 段，默认取版本库根 URL 的最后一段。"
+  text_svn_authz_path_prefix: "Redmine 版本库 URL 在 svn 仓库中对应的路径（如 /trunk），默认根据版本库根 URL 自动识别。"
+  text_svn_authz_export_path: 可选。保存时把规则写入该文件，例如 Apache 使用的 AuthzSVNAccessFile。
+  text_svn_authz_file_missing: 无法读取 authz 文件，受限用户将看不到任何内容。
+  text_svn_authz_raw_editor: "标准 svn authz 语法（Subversion 1.10+）：[groups]、[aliases]、[/path]、[版本库:/path] 和 [:glob:/path/*] 段。"
+  text_svn_authz_rule_editor: 通过规则表格保存会重写上面的规则并丢弃注释，别名会保留。行的顺序会保留，因为它决定重叠通配段之间的优先级。
+  text_svn_authz_rule_editor_delete: 清空某行的路径或用户即可删除该行。
+  text_svn_authz_import: 将文件内容载入上方编辑器，点击保存后才会生效。
+  text_svn_authz_preview: 显示已保存规则中适用于某个登录名的段（留空表示匿名用户），也可以查看其对某个路径的权限。
+  text_svn_authz_preview_bypass: 该用户是管理员或拥有「不受目录权限限制」权限，可以看到全部内容。
+  text_svn_authz_preview_inherit: "各段按文件中的顺序列出。对某个路径，由匹配到的最深的段决定；同一深度有多个通配段匹配时，靠后的段优先。路径以 svn 仓库根为基准，本版本库 URL 对应 %{prefix}。"
+  text_svn_authz_invalid_rules: 已保存的规则无效或无法读取，受限用户将看不到任何内容。
+  text_svn_authz_allowed_directories: 每行一个绝对路径。只能从这些目录读取或向其导出 authz 文件。
+  activerecord:
+    errors:
+      messages:
+        svn_authz_path_not_allowed: 不在允许的目录中（见插件设置）
+        svn_authz_file_not_readable: 无法读取

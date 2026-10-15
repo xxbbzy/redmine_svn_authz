@@ -1,0 +1,5 @@
+<p>
+  <label><%= l(:setting_svn_authz_allowed_directories) %></label>
+  <%= text_area_tag 'settings[allowed_directories]', @settings['allowed_directories'], :rows => 4, :cols => 60 %>
+  <em class="info"><%= l(:text_svn_authz_allowed_directories) %></em>
+</p>

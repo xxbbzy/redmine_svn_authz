@@ -1,0 +1,54 @@
+en:
+  label_svn_authz: Directory permissions
+  label_svn_authz_download: Download authz
+  label_svn_authz_source_managed: Managed in Redmine
+  label_svn_authz_source_file: Read authz file on the server
+  label_svn_authz_current_rules: Rules in effect
+  label_svn_authz_raw_editor: authz rules
+  label_svn_authz_rule_editor: Rule table
+  label_svn_authz_group: Group
+  label_svn_authz_members: Members
+  label_svn_authz_path: Path
+  label_svn_authz_principal: User / @group / *
+  label_svn_authz_access: Access
+  label_svn_authz_access_none: none
+  label_svn_authz_import: Import from authz file
+  label_svn_authz_preview: Preview as user
+  label_svn_authz_section: Section
+  button_svn_authz_preview: Preview
+  field_svn_authz_enabled: Enabled
+  field_svn_authz_source: Rules source
+  field_svn_authz_file_path: authz file
+  field_svn_authz_repo_name: authz repository name
+  field_svn_authz_path_prefix: Path of the repository URL
+  field_svn_authz_export_path: Export to file
+  field_authz_content: authz rules
+  field_authz_file_path: authz file
+  field_authz_repo_name: authz repository name
+  field_path_prefix_override: Path of the repository URL
+  field_export_path: Export to file
+  field_source: Rules source
+  permission_manage_svn_authz: Manage directory permissions
+  permission_bypass_svn_authz: Bypass directory permissions
+  setting_svn_authz_allowed_directories: Allowed directories for authz files
+  notice_svn_authz_imported: "Imported %{path}. Review the rules and save."
+  text_svn_authz_enabled: When enabled, users only see the paths the authz rules grant them read access to. Administrators and roles with "Bypass directory permissions" see everything.
+  text_svn_authz_file_path: Only used with "Read authz file on the server". Changes to the file are picked up automatically.
+  text_svn_authz_repo_name: "Name used in [name:/path] sections. Defaults to the last part of the repository root URL."
+  text_svn_authz_path_prefix: "Where the Redmine repository URL points inside the svn repository (e.g. /trunk). Detected from the repository root URL by default."
+  text_svn_authz_export_path: Optional. Managed rules are written to this file on save, e.g. the AuthzSVNAccessFile used by Apache.
+  text_svn_authz_file_missing: The authz file cannot be read; nothing is visible to restricted users.
+  text_svn_authz_raw_editor: "Standard svn authz syntax (Subversion 1.10+): [groups], [aliases], [/path], [repository:/path] and [:glob:/path/*] sections."
+  text_svn_authz_rule_editor: Saving from the rule table rewrites the rules above and drops comments. Aliases are kept. Row order is kept, as it decides between overlapping wildcard sections.
+  text_svn_authz_rule_editor_delete: Clear the path or the principal of a row to delete it.
+  text_svn_authz_import: Loads the file into the editor above; nothing is saved until you click Save.
+  text_svn_authz_preview: Shows the sections of the saved rules that apply to a login (blank for anonymous) and, optionally, its access to a path.
+  text_svn_authz_preview_bypass: This user is an administrator or has "Bypass directory permissions" and sees everything.
+  text_svn_authz_preview_inherit: "Sections are listed in file order. For a path, the deepest matching section decides; among wildcard sections matching at the same depth, the later one wins. Paths are relative to the svn repository root; this repository's URL points to %{prefix}."
+  text_svn_authz_invalid_rules: The saved rules are invalid or cannot be read; restricted users see nothing.
+  text_svn_authz_allowed_directories: One absolute directory per line. authz files can only be read from or exported to these directories.
+  activerecord:
+    errors:
+      messages:
+        svn_authz_path_not_allowed: is not inside an allowed directory (see the plugin settings)
+        svn_authz_file_not_readable: cannot be read
