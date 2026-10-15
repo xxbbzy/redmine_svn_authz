@@ -35,6 +35,18 @@ Redmine 自带的权限只能控制整个版本库：拥有「浏览版本库」
 
 ## 安装
 
+从 [Releases 页面](https://github.com/xxbbzy/redmine_svn_authz/releases) 下载 `redmine_svn_authz-<版本>.tar.gz`（或 `.zip`），解压到插件目录：
+
+```sh
+cd $REDMINE_ROOT/plugins
+tar xzf redmine_svn_authz-v0.1.0.tar.gz   # 解压出 redmine_svn_authz/
+cd ..
+bin/rails redmine:plugins:migrate RAILS_ENV=production
+# 重启 Redmine
+```
+
+也可以不下载压缩包，直接克隆仓库：
+
 ```sh
 cd $REDMINE_ROOT/plugins
 git clone https://github.com/xxbbzy/redmine_svn_authz.git

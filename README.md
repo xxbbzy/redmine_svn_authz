@@ -45,6 +45,20 @@ repository content.
 
 ## Installation
 
+Download `redmine_svn_authz-<version>.tar.gz` (or `.zip`) from the
+[releases page](https://github.com/xxbbzy/redmine_svn_authz/releases) and
+extract it into the plugins directory:
+
+```sh
+cd $REDMINE_ROOT/plugins
+tar xzf redmine_svn_authz-v0.1.0.tar.gz   # creates redmine_svn_authz/
+cd ..
+bin/rails redmine:plugins:migrate RAILS_ENV=production
+# restart Redmine
+```
+
+Or clone the repository instead of downloading the archive:
+
 ```sh
 cd $REDMINE_ROOT/plugins
 git clone https://github.com/xxbbzy/redmine_svn_authz.git
